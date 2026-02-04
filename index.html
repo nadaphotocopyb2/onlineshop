@@ -17,7 +17,6 @@
 
         body { font-family: 'Inter', sans-serif; margin: 0; background: var(--light); color: var(--navy); line-height: 1.6; }
         
-        /* HEADER MODERN & RESPONSIVE */
         header { 
             background: linear-gradient(135deg, var(--navy) 70%, #1e293b 100%);
             padding: 12px 4%; 
@@ -64,7 +63,6 @@
             .search-container { max-width: 600px; }
         }
 
-        /* Hero */
         .hero { 
             background: var(--navy); color: white; padding: 30px 5%; text-align: left;
             position: relative; overflow: hidden; border-bottom: 8px solid var(--sky);
@@ -86,7 +84,6 @@
         .btn-add { background: var(--navy); color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; font-size: 0.75rem; cursor: pointer; }
         .btn-cancel { background: #f1f5f9; color: #64748b; border: none; padding: 6px; border-radius: 6px; font-size: 0.7rem; cursor: pointer; }
 
-        /* PAGINATION */
         .pagination { display: flex; justify-content: center; align-items: center; gap: 15px; margin: 20px 0; padding-bottom: 20px; }
         .btn-page { background: var(--navy); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; }
         .btn-page:disabled { background: #cbd5e1; cursor: not-allowed; }
@@ -94,7 +91,6 @@
         .grid-jasa { display: flex; flex-wrap: wrap; gap: 8px; padding: 15px 5%; }
         .item-jasa { background: white; border: 1.5px solid var(--navy); padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 0.75rem; }
 
-        /* MODAL STYLE */
         .modal-cart {
             display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
@@ -106,7 +102,6 @@
         }
         .close-modal { position: absolute; right: 20px; top: 15px; font-size: 1.5rem; cursor: pointer; }
         
-        /* FORM STYLES */
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; }
         .form-group input, .form-group select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
@@ -119,7 +114,7 @@
         .btn-checkout { background: #22c55e; color: white; width: 100%; border: none; padding: 12px; border-radius: 8px; font-weight: bold; margin-top: 10px; cursor: pointer; }
         .btn-next { background: var(--navy); color: white; width: 100%; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        /* POPUP NOTIF ANTAR */
+        /* POPUP NOTIF ANTAR - UPDATED */
         .popup-notif {
             display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); align-items: center; justify-content: center;
@@ -159,12 +154,18 @@
     <div id="deliveryPopup" class="popup-notif">
         <div class="popup-notif-content">
             <i class="fas fa-truck-fast"></i>
-            <h3 style="margin: 0 0 10px 0;">Layanan Antar</h3>
-            <p style="font-size: 0.9rem; color: #475569;">
-                Layanan antar alamat berlaku khusus untuk <strong>minimal belanja Rp 100.000</strong>.<br><br>
-                Terima kasih atas pengertiannya.
-            </p>
-            <button class="btn-paham" onclick="closeDeliveryPopup()">Saya Mengerti</button>
+            <h3 style="margin: 0 0 10px 0;">Ketentuan Layanan Antar</h3>
+            <div style="text-align: left; font-size: 0.85rem; color: #475569; line-height: 1.4;">
+                <p>Layanan antar alamat berlaku dengan ketentuan:</p>
+                <ul style="padding-left: 20px;">
+                    <li><strong>Minimal Belanja:</strong> Rp 100.000</li>
+                    <li><strong>Hari Kerja:</strong> Senin, Selasa, Rabu, Kamis, & Sabtu</li>
+                    <li><strong>Libur Antar:</strong> Jumat & Minggu</li>
+                    <li><strong>Jam Operasional:</strong> 08.00 - 16.00 WIB</li>
+                    <li><strong>Kondisi Khusus:</strong> Tidak melayani antar saat <strong>Hujan</strong> atau <strong>Waktu Sholat</strong>.</li>
+                </ul>
+            </div>
+            <button class="btn-paham" onclick="closeDeliveryPopup()">Saya Mengerti & Setuju</button>
         </div>
     </div>
 
@@ -206,7 +207,7 @@
                     <option value="10000">Antar: Beji Mulyo (B1) - Rp 10.000</option>
                     <option value="15000">Antar: Margo Mulyo (B3) - Rp 15.000</option>
                 </select>
-                <small id="shippingWarning" style="color: red; display: none; font-size: 0.7rem; margin-top: 5px;">* Minimal belanja Rp 100.000 untuk layanan antar</small>
+                <small id="shippingWarning" style="color: red; display: none; font-size: 0.7rem; margin-top: 5px;">* Sesuai syarat, minimal belanja Rp 100.000 untuk layanan antar.</small>
             </div>
 
             <div class="form-group">
@@ -231,7 +232,7 @@
     <div class="hero">
         <div class="hero-content">
             <h1>SOLUSI CETAK & ATK</h1>
-            <p style="margin:0; font-size: 0.8rem; opacity: 0.9;">Siap antar wilayah B1, B2 & B3 Syarat & Ketentuan berlaku</p>
+            <p style="margin:0; font-size: 0.8rem; opacity: 0.9;">Layanan Antar: Senin-Sabtu (08.00-16.00). S&K Berlaku.</p>
         </div>
     </div>
 
@@ -397,10 +398,19 @@
             updateCartDisplay();
         }
 
-        // FUNGSI BARU UNTUK POPUP ANTAR
+        // LOGIKA BARU UNTUK HARI DAN POPUP
         function handleShippingChange() {
             const shippingVal = parseInt(document.getElementById('shippingMethod').value);
+            const hariIni = new Date().getDay(); // 0=Minggu, 5=Jumat
+
             if (shippingVal > 0) {
+                // Cek apakah hari ini Jumat (5) atau Minggu (0)
+                if (hariIni === 0 || hariIni === 5) {
+                    alert("Mohon maaf, layanan antar LIBUR pada hari Jumat & Minggu. Silakan pilih 'Ambil di Tempat'.");
+                    document.getElementById('shippingMethod').value = "0";
+                    updateCartDisplay();
+                    return;
+                }
                 document.getElementById('deliveryPopup').style.display = 'flex';
             }
             updateCartDisplay();
@@ -440,10 +450,9 @@
             });
 
             let totalAkhir;
-            // Logika Validasi Min Belanja 100rb untuk Antar
             if (totalBelanja < 100000 && shipping > 0) {
                 shippingWarning.style.display = 'block';
-                shippingSelect.value = "0"; // Paksa balik ke ambil di tempat
+                shippingSelect.value = "0"; 
                 totalAkhir = totalBelanja;
             } else {
                 shippingWarning.style.display = 'none';
@@ -486,9 +495,10 @@
             if(paymentMethod === "Transfer Bank") {
                 pesan += `*Rekening Transfer:* SeaBank\n`;
                 pesan += `(901799730936 a.n Mukhtar Safaat Abdul Jamil)\n`;
-            } else {
-                pesan += `*Catatan:* Pembayaran tunai saat barang diterima/diambil.\n`;
             }
+
+            // CATATAN SYARAT BARU DI WA
+            pesan += `*Catatan Antar:* Pengiriman jam 08.00-16.00 (kecuali waktu sholat/hujan). Libur antar Jumat & Minggu.\n`;
             
             pesan += `----------------------------------\n`;
             pesan += `_Mohon segera diproses, terima kasih!_`;
@@ -514,5 +524,4 @@
         renderAtk();
     </script>
 </body>
-
 </html>
