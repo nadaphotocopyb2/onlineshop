@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f172a">
+    <title>NADA PHOTOCOPY B2 | E-Commerce & Jasa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --navy: #0f172a;
+            --orange: #f97316;
+            --sky: #38bdf8;
+            --light: #f8fafc;
+        }
+
+        body { font-family: 'Inter', sans-serif; margin: 0; background: var(--light); color: var(--navy); line-height: 1.6; }
+        
+        /* HEADER MODERN & RESPONSIVE */
+        header { 
+            background: linear-gradient(135deg, var(--navy) 70%, #1e293b 100%);
+            padding: 12px 4%; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border-bottom: 4px solid var(--orange);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .header-top { display: flex; justify-content: space-between; align-items: center; }
+        .header-action { display: flex; align-items: center; gap: 12px; width: 100%; }
+        .brand { font-weight: 900; font-size: 1.1rem; letter-spacing: 0.5px; white-space: nowrap; }
+        .brand .nada { color: var(--sky); }
+        .brand .photo { color: var(--orange); }
+
+        .search-container { position: relative; flex-grow: 1; }
+        .search-container input {
+            width: 100%; padding: 10px 40px 10px 15px; border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.15);
+            color: white; font-size: 0.9rem; outline: none; box-sizing: border-box;
+        }
+        .search-container i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--sky); }
+
+        .cart-container {
+            background: var(--orange); height: 40px; padding: 0 15px; border-radius: 12px;
+            position: relative; cursor: pointer; display: flex; align-items: center;
+            justify-content: center; min-width: 45px; transition: 0.3s;
+        }
+        .cart-container:hover { background: #ea580c; }
+        .cart-icon { font-size: 1.1rem; color: white; }
+        .cart-count { 
+            position: absolute; top: -5px; right: -5px; background: white; color: var(--navy); 
+            font-size: 0.7rem; padding: 2px 6px; border-radius: 50%; font-weight: 800;
+            border: 2px solid var(--orange);
+        }
+
+        @media (min-width: 768px) {
+            header { flex-direction: row; justify-content: space-between; align-items: center; padding: 15px 4%; }
+            .header-action { width: auto; flex-grow: 1; margin-left: 40px; }
+            .search-container { max-width: 600px; }
+        }
+
+        /* Hero */
+        .hero { 
+            background: var(--navy); color: white; padding: 30px 5%; text-align: left;
+            position: relative; overflow: hidden; border-bottom: 8px solid var(--sky);
+        }
+        .hero h1 { font-size: 1.4rem; margin: 0; color: var(--sky); }
+
+        .section-title { padding: 20px 5% 0; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+        .section-title::before { content: ''; width: 4px; height: 18px; background: var(--orange); border-radius: 10px; }
+
+        .grid-atk { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px 5%; }
+        @media (min-width: 900px) { .grid-atk { grid-template-columns: repeat(5, 1fr); } }
+
+        .card-atk { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+        .card-atk img { width: 100%; aspect-ratio: 1/1; object-fit: cover; background: #eee; }
+        .info-atk { padding: 10px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .price { font-weight: 800; color: var(--orange); margin: 5px 0; font-size: 0.95rem; }
+
+        .btn-group { display: flex; flex-direction: column; gap: 5px; margin-top: 8px; }
+        .btn-add { background: var(--navy); color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; font-size: 0.75rem; cursor: pointer; }
+        .btn-cancel { background: #f1f5f9; color: #64748b; border: none; padding: 6px; border-radius: 6px; font-size: 0.7rem; cursor: pointer; }
+
+        /* PAGINATION */
+        .pagination { display: flex; justify-content: center; align-items: center; gap: 15px; margin: 20px 0; padding-bottom: 20px; }
+        .btn-page { background: var(--navy); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn-page:disabled { background: #cbd5e1; cursor: not-allowed; }
+
+        .grid-jasa { display: flex; flex-wrap: wrap; gap: 8px; padding: 15px 5%; }
+        .item-jasa { background: white; border: 1.5px solid var(--navy); padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 0.75rem; }
+
+        /* MODAL STYLE */
+        .modal-cart {
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background: white; margin: 5% auto; padding: 20px; width: 90%; max-width: 500px;
+            border-radius: 15px; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            max-height: 85vh; overflow-y: auto;
+        }
+        .close-modal { position: absolute; right: 20px; top: 15px; font-size: 1.5rem; cursor: pointer; }
+        
+        /* FORM STYLES */
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
+
+        .cart-item-list { max-height: 200px; overflow-y: auto; margin: 15px 0; border-top: 1px solid #eee; }
+        .cart-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+        .total-price { font-weight: 800; font-size: 1.1rem; text-align: right; color: var(--orange); margin-top: 10px; }
+        
+        .bank-info { background: #f0f9ff; border: 1px dashed var(--sky); padding: 10px; border-radius: 8px; margin: 15px 0; font-size: 0.85rem; display: none; }
+        .btn-checkout { background: #22c55e; color: white; width: 100%; border: none; padding: 12px; border-radius: 8px; font-weight: bold; margin-top: 10px; cursor: pointer; }
+        .btn-next { background: var(--navy); color: white; width: 100%; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+        /* POPUP NOTIF ANTAR */
+        .popup-notif {
+            display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); align-items: center; justify-content: center;
+        }
+        .popup-notif-content {
+            background: white; padding: 25px; border-radius: 12px; text-align: center;
+            width: 85%; max-width: 350px; box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        .popup-notif-content i { font-size: 3rem; color: var(--orange); margin-bottom: 15px; }
+        .btn-paham { background: var(--navy); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; margin-top: 15px; cursor: pointer; width: 100%; }
+
+        footer { background: var(--navy); color: white; padding: 20px; text-align: center; border-top: 4px solid var(--orange); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <div class="brand">
+                <span class="nada">NADA</span><span class="photo"> PHOTOCOPY B2</span>
+            </div>
+        </div>
+
+        <div class="header-action">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Cari barang atau jasa...">
+                <i class="fas fa-search"></i>
+            </div>
+            
+            <div class="cart-container" onclick="openUserForm()">
+                <i class="fas fa-shopping-cart cart-icon"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </div>
+    </header>
+
+    <div id="deliveryPopup" class="popup-notif">
+        <div class="popup-notif-content">
+            <i class="fas fa-truck-fast"></i>
+            <h3 style="margin: 0 0 10px 0;">Layanan Antar</h3>
+            <p style="font-size: 0.9rem; color: #475569;">
+                Layanan antar alamat berlaku khusus untuk <strong>minimal belanja Rp 100.000</strong>.<br><br>
+                Terima kasih atas pengertiannya.
+            </p>
+            <button class="btn-paham" onclick="closeDeliveryPopup()">Saya Mengerti</button>
+        </div>
+    </div>
+
+    <div id="userModal" class="modal-cart">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModals()">&times;</span>
+            <h3><i class="fas fa-user-edit"></i> Data Pemesan</h3>
+            <div class="form-group">
+                <label>Nama Lengkap :</label>
+                <input type="text" id="userName" placeholder="Masukkan nama Anda">
+            </div>
+            <div class="form-group">
+                <label>Alamat Lengkap :</label>
+                <input type="text" id="userAddress" placeholder="Contoh: Jl. Mawar No. 1">
+            </div>
+            <div class="form-group">
+                <label>Nomor WhatsApp :</label>
+                <input type="text" id="userWA" placeholder="Contoh: 08123456789">
+                <small style="color: #64748b; font-size: 0.65rem; display: block; margin-top: 4px;">
+                    *Gunakan format 08 atau 62 (10-13 digit).
+                </small>
+            </div>
+            <button class="btn-next" onclick="openCartModal()">Lanjut Belanja/Beli</button>
+        </div>
+    </div>
+
+    <div id="cartModal" class="modal-cart">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModals()">&times;</span>
+            <h3 style="margin-top: 0;"><i class="fas fa-shopping-basket"></i> Detail Belanja</h3>
+            
+            <div id="cartItemList" class="cart-item-list"></div>
+
+            <div class="form-group">
+                <label>Metode Pengiriman :</label>
+                <select id="shippingMethod" onchange="handleShippingChange()">
+                    <option value="0">Ambil di Tempat (Rp 0)</option>
+                    <option value="5000">Antar: Bero Jaya Timur (B2) - Rp 5.000</option>
+                    <option value="10000">Antar: Beji Mulyo (B1) - Rp 10.000</option>
+                    <option value="15000">Antar: Margo Mulyo (B3) - Rp 15.000</option>
+                </select>
+                <small id="shippingWarning" style="color: red; display: none; font-size: 0.7rem; margin-top: 5px;">* Minimal belanja Rp 100.000 untuk layanan antar</small>
+            </div>
+
+            <div class="form-group">
+                <label>Metode Pembayaran :</label>
+                <select id="paymentMethod" onchange="toggleBankInfo()">
+                    <option value="Tunai / Bayar di Tempat">Tunai / Bayar di Tempat</option>
+                    <option value="Transfer Bank">Transfer Bank</option>
+                </select>
+            </div>
+
+            <div id="bankInfoBox" class="bank-info">
+                <strong>Informasi Rekening:</strong><br>
+                Sea Bank: <strong>901799730936</strong><br>
+                a.n Mukhtar Safaat Abdul Jamil
+            </div>
+
+            <div class="total-price" id="totalPriceDisplay">Total: Rp 0</div>
+            <button class="btn-checkout" onclick="checkoutWA()">Kirim WA Admin <i class="fab fa-whatsapp"></i></button>
+        </div>
+    </div>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1>SOLUSI CETAK & ATK</h1>
+            <p style="margin:0; font-size: 0.8rem; opacity: 0.9;">Siap antar wilayah B1, B2 & B3 Syarat & Ketentuan berlaku</p>
+        </div>
+    </div>
+
+    <h2 class="section-title">Layanan Jasa</h2>
+    <div class="grid-jasa" id="listJasa"></div>
+
+    <h2 class="section-title">Katalog Alat Tulis</h2>
+    <div class="grid-atk" id="listAtk"></div>
+
+    <div class="pagination">
+        <button class="btn-page" id="prevBtn" onclick="changePage(-1)">Sebelumnya</button>
+        <span id="pageInfo">Halaman 1</span>
+        <button class="btn-page" id="nextBtn" onclick="changePage(1)">Berikutnya</button>
+    </div>
+
+    <footer>
+        <p style="font-size: 0.7rem; opacity: 0.6; margin: 0;">
+            <strong>NADA PHOTOCOPY B2 <br> 2026</strong>
+        </p>
+    </footer>
+
+    <script>
+        const dataJasa = ["Fotocopy", "Print", "Scan", "Laminating", "Jilid", "Cetak Foto", "Cetak Spanduk", "Cetak Stampel", "Cetak Undangan"];
+        
+        const dataAtk = [
+            { id: 1, nama: "Kertas Sidu A4", harga: 50000, img: "ini (1).ico" },
+            { id: 2, nama: "Buku Sidu 38", harga: 45000, img: "ini (2).ico" },
+            { id: 3, nama: "Pensil 2B", harga: 5000, img: "ini (3).ico" },
+            { id: 4, nama: "Penghapus Faber Castell", harga: 4000, img: "ini (4).ico" },
+            { id: 5, nama: "Penggaris Besi 30 CM", harga: 5000, img: "ini (5).ico" },
+            { id: 6, nama: "Buku Sidu 58", harga: 50000, img: "ini (6).ico" },
+            { id: 7, nama: "Staples 10 inch", harga: 20000, img: "ini (7).ico" },
+            { id: 8, nama: "Lakban Bening Besar", harga: 15000, img: "ini (8).ico" },
+            { id: 9, nama: "Gunting Joyko", harga: 10000, img: "ini (9).ico" },
+            { id: 10, nama: "Cutter Besar Jazzco", harga: 15000, img: "ini (10).ico" },
+            { id: 11, nama: "Lem Lipstik", harga: 5000, img: "ini (11).ico" },
+            { id: 12, nama: "Spidol Permanen & Non", harga: 8000, img: "ini (12).ico" },
+            { id: 13, nama: "Isi Staples Kecil", harga: 4000, img: "ini (13).ico" },
+            { id: 14, nama: "Pena Standar Ae7", harga: 3000, img: "ini (14).ico" },
+            { id: 15, nama: "Kertas Sidu F4", harga: 55000, img: "ini (15).ico" },
+            { id: 16, nama: "Buku Big Boss", harga: 50000, img: "ini (16).ico" },
+            { id: 17, nama: "Map coklat tali 310", harga: 3000, img: "ini (17).ico" },
+            { id: 18, nama: "Mika Asahi Jilid", harga: 65000, img: "ini (18).ico" },
+            { id: 19, nama: "Map Kambing", harga: 3000, img: "ini (19).ico" },
+            { id: 20, nama: "Pena Joyko 0.5", harga: 5000, img: "ini (20).ico" },
+            { id: 21, nama: "Double Tipe Besar", harga: 15000, img: "ini (21).ico" },
+            { id: 22, nama: "Iqro' Besar", harga: 10000, img: "ini (22).ico" },
+            { id: 23, nama: "Iqro' Kecil", harga: 8000, img: "ini (23).ico" },
+            { id: 24, nama: "Isi Cutter Kecil", harga: 5000, img: "ini (24).ico"},
+            { id: 25, nama: "Isi Cutter Besar", harga: 10000, img: "ini (25).ico"},
+            { id: 26, nama: "Pewarna Greebel Besar", harga: 30000, img: "ini (26).ico"},
+            { id: 27, nama: "Pewarna Crayon Besar", harga: 20000, img: "ini (27).ico"},
+            { id: 28, nama: "Pewarna Greebel Kecil", harga: 18000, img: "ini (28).ico"},
+            { id: 29, nama: "Penggaris lipat", harga: 4000, img: "ini (29).ico"},
+            { id: 30, nama: "Cutter Kecil", harga: 10000, img: "ini (30).ico"},
+            { id: 31, nama: "Penggaris Busur", harga: 4000, img: "ini (31).ico"},
+            { id: 32, nama: "Penggaris Karakter Hewan", harga: 4000, img: "ini (32).ico"},
+            { id: 33, nama: "Penggaris Karakter Sisir", harga: 4000, img: "ini (33).ico"},
+            { id: 34, nama: "Lem Fox Botol", harga: 15000, img: "ini (34).ico"},
+            { id: 35, nama: "Lakban Hitam Besar", harga: 18000, img: "ini (35).ico"},
+            { id: 36, nama: "Lakban Hitam Sedang", harga: 15000, img: "ini (36).ico"}, 
+            { id: 37, nama: "Lakban Hitam Kecil", harga: 10000, img: "ini (37).ico"},
+            { id: 38, nama: "Masking Tape Besar", harga: 15000, img: "ini (38).ico"},
+            { id: 39, nama: "Masking Tape Kecil", harga: 10000, img: "ini (39).ico"},
+            { id: 40, nama: "Nota Besar 2 ply", harga: 70000, img: "ini (40).ico"},
+            { id: 41, nama: "Nota Kecil 1 Ply", harga: 4000, img: "ini (41).ico"},
+            { id: 42, nama: "Buku Ekpedisi", harga: 15000, img: "ini (42).ico"},
+            { id: 43, nama: "Buku Quarto Kecil", harga: 8000, img: "ini (43).ico"},
+            { id: 44, nama: "Buku Quarto Deboor", harga: 15000, img: "ini (44).ico"},
+            { id: 45, nama: "Buku Polio 100", harga: 25000, img: "ini (45).ico"}
+        ];
+
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let filteredAtk = [...dataAtk];
+        let myCart = [];
+
+        function renderJasa(filter = "") {
+            const container = document.getElementById('listJasa');
+            container.innerHTML = ''; 
+            const filtered = dataJasa.filter(nama => nama.toLowerCase().includes(filter.toLowerCase()));
+            filtered.forEach(nama => {
+                container.innerHTML += `<div class="item-jasa">${nama}</div>`;
+            });
+        }
+
+        function renderAtk() {
+            const container = document.getElementById('listAtk');
+            container.innerHTML = ''; 
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageData = filteredAtk.slice(start, end);
+
+            pageData.forEach(item => {
+                container.innerHTML += `
+                    <div class="card-atk">
+                        <img src="${item.img}" onerror="this.src='https://via.placeholder.com/150'">
+                        <div class="info-atk">
+                            <div>
+                                <div style="font-size: 0.8rem; font-weight: bold;">${item.nama}</div>
+                                <div class="price">Rp ${item.harga.toLocaleString('id-ID')}</div>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn-add" onclick="addToCart(${item.id})">+ Keranjang</button>
+                                <button class="btn-cancel" onclick="removeFromCart(${item.id})">Batal</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+            updatePagination();
+        }
+
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredAtk.length / itemsPerPage);
+            document.getElementById('pageInfo').innerText = `Halaman ${currentPage} dari ${totalPages || 1}`;
+            document.getElementById('prevBtn').disabled = currentPage === 1;
+            document.getElementById('nextBtn').disabled = currentPage >= totalPages || totalPages === 0;
+        }
+
+        function changePage(step) {
+            currentPage += step;
+            renderAtk();
+            window.scrollTo({ top: 400, behavior: 'smooth' });
+        }
+
+        function addToCart(id) {
+            const produk = dataAtk.find(item => item.id === id);
+            const inCart = myCart.find(item => item.id === id);
+            if (inCart) { inCart.qty += 1; } else { myCart.push({ ...produk, qty: 1 }); }
+            updateCartDisplay();
+        }
+
+        function removeFromCart(id) {
+            const inCart = myCart.find(item => item.id === id);
+            if (inCart) {
+                if (inCart.qty > 1) { inCart.qty -= 1; } 
+                else { myCart = myCart.filter(item => item.id !== id); }
+            }
+            updateCartDisplay();
+        }
+
+        function openUserForm() {
+            if (myCart.length === 0) return alert("Keranjang belanja masih kosong!");
+            document.getElementById('userModal').style.display = 'block';
+        }
+
+        function closeModals() {
+            document.getElementById('userModal').style.display = 'none';
+            document.getElementById('cartModal').style.display = 'none';
+        }
+
+        function openCartModal() {
+            const nama = document.getElementById('userName').value.trim();
+            const alamat = document.getElementById('userAddress').value.trim();
+            const wa = document.getElementById('userWA').value.trim();
+
+            if (!nama || !alamat || !wa) return alert("Mohon lengkapi data Anda!");
+            if (wa.length < 10 || wa.length > 13) return alert("Nomor WhatsApp tidak valid! (10-13 digit)");
+            if (!wa.startsWith('08') && !wa.startsWith('62')) return alert("Format nomor salah! Harus diawali dengan 08 atau 62.");
+            
+            document.getElementById('userModal').style.display = 'none';
+            document.getElementById('cartModal').style.display = 'block';
+            updateCartDisplay();
+        }
+
+        // FUNGSI BARU UNTUK POPUP ANTAR
+        function handleShippingChange() {
+            const shippingVal = parseInt(document.getElementById('shippingMethod').value);
+            if (shippingVal > 0) {
+                document.getElementById('deliveryPopup').style.display = 'flex';
+            }
+            updateCartDisplay();
+        }
+
+        function closeDeliveryPopup() {
+            document.getElementById('deliveryPopup').style.display = 'none';
+        }
+
+        function toggleBankInfo() {
+            const method = document.getElementById('paymentMethod').value;
+            const bankBox = document.getElementById('bankInfoBox');
+            bankBox.style.display = (method === "Transfer Bank") ? 'block' : 'none';
+        }
+
+        function updateCartDisplay() {
+            const totalItems = myCart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cartCount').innerText = totalItems;
+            
+            const listContainer = document.getElementById('cartItemList');
+            const totalDisplay = document.getElementById('totalPriceDisplay');
+            const shippingSelect = document.getElementById('shippingMethod');
+            const shipping = parseInt(shippingSelect.value);
+            const shippingWarning = document.getElementById('shippingWarning');
+            
+            listContainer.innerHTML = '';
+            let totalBelanja = 0;
+
+            myCart.forEach(item => {
+                const subtotal = item.harga * item.qty;
+                totalBelanja += subtotal;
+                listContainer.innerHTML += `
+                    <div class="cart-item">
+                        <span>${item.nama} (x${item.qty})</span>
+                        <span>Rp ${subtotal.toLocaleString('id-ID')}</span>
+                    </div>`;
+            });
+
+            let totalAkhir;
+            // Logika Validasi Min Belanja 100rb untuk Antar
+            if (totalBelanja < 100000 && shipping > 0) {
+                shippingWarning.style.display = 'block';
+                shippingSelect.value = "0"; // Paksa balik ke ambil di tempat
+                totalAkhir = totalBelanja;
+            } else {
+                shippingWarning.style.display = 'none';
+                totalAkhir = totalBelanja + shipping;
+            }
+            
+            totalDisplay.innerHTML = `
+                <small style="font-size:0.8rem; color:#666">Belanja: Rp ${totalBelanja.toLocaleString('id-ID')}</small><br>
+                <small style="font-size:0.8rem; color:#666">Ongkir: Rp ${(shippingSelect.value > 0 ? shipping : 0).toLocaleString('id-ID')}</small><br>
+                Total Bayar: Rp ${totalAkhir.toLocaleString('id-ID')}`;
+        }
+
+        function checkoutWA() {
+            const nama = document.getElementById('userName').value;
+            const alamat = document.getElementById('userAddress').value;
+            const waUser = document.getElementById('userWA').value;
+            const shippingSelect = document.getElementById('shippingMethod');
+            const shippingName = shippingSelect.options[shippingSelect.selectedIndex].text;
+            const shippingCost = parseInt(shippingSelect.value);
+            const paymentMethod = document.getElementById('paymentMethod').value;
+
+            let pesan = `*PESANAN BARU - NADA PHOTOCOPY B2*\n`;
+            pesan += `----------------------------------\n`;
+            pesan += `*Nama:* ${nama}\n`;
+            pesan += `*Alamat:* ${alamat}\n`;
+            pesan += `*WA:* ${waUser}\n`;
+            pesan += `----------------------------------\n`;
+            
+            let totalBelanja = 0;
+            myCart.forEach(item => {
+                pesan += `• ${item.nama} (x${item.qty}) : Rp ${(item.harga * item.qty).toLocaleString('id-ID')}\n`;
+                totalBelanja += item.harga * item.qty;
+            });
+            
+            pesan += `----------------------------------\n`;
+            pesan += `*Metode Pengiriman:* ${shippingName}\n`;
+            pesan += `*Metode Pembayaran:* ${paymentMethod}\n`;
+            pesan += `*Total Bayar:* Rp ${(totalBelanja + shippingCost).toLocaleString('id-ID')}\n\n`;
+            
+            if(paymentMethod === "Transfer Bank") {
+                pesan += `*Rekening Transfer:* SeaBank\n`;
+                pesan += `(901799730936 a.n Mukhtar Safaat Abdul Jamil)\n`;
+            } else {
+                pesan += `*Catatan:* Pembayaran tunai saat barang diterima/diambil.\n`;
+            }
+            
+            pesan += `----------------------------------\n`;
+            pesan += `_Mohon segera diproses, terima kasih!_`;
+            
+            const waUrl = `https://wa.me/6285788722252?text=${encodeURIComponent(pesan)}`;
+            window.open(waUrl, '_blank');
+        }
+
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const keyword = e.target.value.toLowerCase();
+            renderJasa(keyword);
+            filteredAtk = dataAtk.filter(item => item.nama.toLowerCase().includes(keyword));
+            currentPage = 1;
+            renderAtk();
+        });
+
+        window.onclick = function(event) {
+            if (event.target.className === 'modal-cart') closeModals();
+            if (event.target.id === 'deliveryPopup') closeDeliveryPopup();
+        }
+
+        renderJasa();
+        renderAtk();
+    </script>
+</body>
+
+</html>
