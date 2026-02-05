@@ -13,6 +13,7 @@
             --orange: #f97316;
             --sky: #38bdf8;
             --light: #f8fafc;
+            --android-green: #3DDC84; /* Warna khas Android */
         }
 
         body { font-family: 'Inter', sans-serif; margin: 0; background: var(--light); color: var(--navy); line-height: 1.6; }
@@ -31,7 +32,7 @@
         }
 
         .header-top { display: flex; justify-content: space-between; align-items: center; }
-        .header-action { display: flex; align-items: center; gap: 12px; width: 100%; }
+        .header-action { display: flex; align-items: center; gap: 10px; width: 100%; }
         .brand { font-weight: 900; font-size: 1.1rem; letter-spacing: 0.5px; white-space: nowrap; }
         .brand .nada { color: var(--sky); }
         .brand .photo { color: var(--orange); }
@@ -45,9 +46,9 @@
         .search-container i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--sky); }
 
         .cart-container {
-            background: var(--orange); height: 40px; padding: 0 15px; border-radius: 12px;
+            background: var(--orange); height: 40px; padding: 0 12px; border-radius: 12px;
             position: relative; cursor: pointer; display: flex; align-items: center;
-            justify-content: center; min-width: 45px; transition: 0.3s;
+            justify-content: center; min-width: 40px; transition: 0.3s;
         }
         .cart-container:hover { background: #ea580c; }
         .cart-icon { font-size: 1.1rem; color: white; }
@@ -57,10 +58,21 @@
             border: 2px solid var(--orange);
         }
 
+        /* TOMBOL APK STYLE */
+        .btn-apk {
+            background: var(--android-green); height: 40px; padding: 0 12px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--navy); cursor: pointer; border: none; font-weight: 800; gap: 6px;
+            transition: 0.3s;
+        }
+        .btn-apk:hover { background: #2ebf6d; transform: translateY(-2px); }
+        .btn-apk span { display: none; font-size: 0.75rem; }
+
         @media (min-width: 768px) {
             header { flex-direction: row; justify-content: space-between; align-items: center; padding: 15px 4%; }
-            .header-action { width: auto; flex-grow: 1; margin-left: 40px; }
+            .header-action { width: auto; flex-grow: 1; margin-left: 40px; gap: 15px; }
             .search-container { max-width: 600px; }
+            .btn-apk span { display: inline; }
         }
 
         .hero { 
@@ -114,7 +126,6 @@
         .btn-checkout { background: #22c55e; color: white; width: 100%; border: none; padding: 12px; border-radius: 8px; font-weight: bold; margin-top: 10px; cursor: pointer; }
         .btn-next { background: var(--navy); color: white; width: 100%; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        /* POPUP NOTIF ANTAR - UPDATED */
         .popup-notif {
             display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); align-items: center; justify-content: center;
@@ -148,8 +159,43 @@
                 <i class="fas fa-shopping-cart cart-icon"></i>
                 <span class="cart-count" id="cartCount">0</span>
             </div>
+
+            <button class="btn-apk" onclick="openApkModal()">
+                <i class="fab fa-android"></i>
+                <span>APLIKASI</span>
+            </button>
         </div>
     </header>
+
+    <div id="apkModal" class="modal-cart">
+        <div class="modal-content" style="border-top: 6px solid var(--android-green);">
+            <span class="close-modal" onclick="closeApkModal()">&times;</span>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <i class="fas fa-shield-halved" style="font-size: 3.5rem; color: var(--android-green);"></i>
+                <h3 style="margin: 10px 0 5px;">Panduan Instalasi Aman</h3>
+                <p style="font-size: 0.8rem; color: #64748b;">NADA PHOTOCOPY B2 - Official App</p>
+            </div>
+
+            <div style="font-size: 0.85rem; line-height: 1.6; color: #334155;">
+                <p>Aplikasi kami aman, bebas virus, dan dirancang khusus untuk memudahkan belanja Anda. Namun, karena tidak diunduh dari Play Store, mohon ikuti langkah berikut:</p>
+                
+                <div style="background: #fdf2f2; padding: 10px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #ef4444;">
+                    <i class="fas fa-circle-exclamation" style="color:#ef4444"></i> <strong>PENTING:</strong> Jika Android menampilkan pesan <em>"File mungkin berbahaya"</em> atau <em>"Sumber tidak dikenal"</em>, itu adalah proteksi standar Android.
+                </div>
+
+                <ul style="padding-left: 20px; margin-bottom: 15px;">
+                    <li style="margin-bottom: 8px;"><b>Tetap Lanjutkan:</b> Pilih opsi <strong>"Tetap Instal"</strong> atau <strong>"Lanjutkan"</strong> saat muncul notifikasi.</li>
+                    <li style="margin-bottom: 8px;"><b>Berikan Izin:</b> Klik "Izinkan" untuk akses fitur belanja yang maksimal.</li>
+                    <li style="margin-bottom: 8px;"><b>Verifikasi Keamanan:</b> Sistem antivirus otomatis bawaan HP Anda akan tetap memindai file ini setelah terinstal untuk menjamin keamanan 100%.</li>
+                </ul>
+            </div>
+
+            <a href="nada photocopyb2 onlineshop_1_1.0.apk" download class="btn-checkout" style="text-align:center; text-decoration:none; display:block; background: var(--android-green); margin-bottom: 10px;" onclick="closeApkModal()">
+                SAYA MENGERTI, DOWNLOAD APK
+            </a>
+            <p style="text-align: center; font-size: 0.7rem; color: #94a3b8;"><i class="fas fa-lock"></i> Koneksi aman & terenkripsi</p>
+        </div>
+    </div>
 
     <div id="deliveryPopup" class="popup-notif">
         <div class="popup-notif-content">
@@ -179,7 +225,7 @@
             </div>
             <div class="form-group">
                 <label>Alamat Lengkap :</label>
-                <input type="text" id="userAddress" placeholder="Contoh: Jl. Mawar No. 1">
+                <input type="text" id="userAddress" placeholder="Contoh: RT. 29 Dusun V Bero Jaya Timur">
             </div>
             <div class="form-group">
                 <label>Nomor WhatsApp :</label>
@@ -310,6 +356,10 @@
         let filteredAtk = [...dataAtk];
         let myCart = [];
 
+        // FUNGSI APK MODAL
+        function openApkModal() { document.getElementById('apkModal').style.display = 'block'; }
+        function closeApkModal() { document.getElementById('apkModal').style.display = 'none'; }
+
         function renderJasa(filter = "") {
             const container = document.getElementById('listJasa');
             container.innerHTML = ''; 
@@ -398,13 +448,11 @@
             updateCartDisplay();
         }
 
-        // LOGIKA BARU UNTUK HARI DAN POPUP
         function handleShippingChange() {
             const shippingVal = parseInt(document.getElementById('shippingMethod').value);
-            const hariIni = new Date().getDay(); // 0=Minggu, 5=Jumat
+            const hariIni = new Date().getDay();
 
             if (shippingVal > 0) {
-                // Cek apakah hari ini Jumat (5) atau Minggu (0)
                 if (hariIni === 0 || hariIni === 5) {
                     alert("Mohon maaf, layanan antar LIBUR pada hari Jumat & Minggu. Silakan pilih 'Ambil di Tempat'.");
                     document.getElementById('shippingMethod').value = "0";
@@ -497,9 +545,7 @@
                 pesan += `(901799730936 a.n Mukhtar Safaat Abdul Jamil)\n`;
             }
 
-            // CATATAN SYARAT BARU DI WA
             pesan += `*Catatan Antar:* Pengiriman jam 08.00-16.00 (kecuali waktu sholat/hujan). Libur antar Jumat & Minggu.\n`;
-            
             pesan += `----------------------------------\n`;
             pesan += `_Mohon segera diproses, terima kasih!_`;
             
@@ -516,7 +562,10 @@
         });
 
         window.onclick = function(event) {
-            if (event.target.className === 'modal-cart') closeModals();
+            if (event.target.className === 'modal-cart') {
+                closeModals();
+                closeApkModal();
+            }
             if (event.target.id === 'deliveryPopup') closeDeliveryPopup();
         }
 
