@@ -87,13 +87,45 @@
         .grid-atk { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px 5%; }
         @media (min-width: 900px) { .grid-atk { grid-template-columns: repeat(5, 1fr); } }
 
-        .card-atk { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
-        .card-atk img { width: 100%; aspect-ratio: 1/1; object-fit: cover; background: #eee; }
+        /* --- BAGIAN ANIMASI YANG DIKEMBALIKAN --- */
+        .card-atk { 
+            background: white; border-radius: 12px; overflow: hidden; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; 
+            flex-direction: column; transition: all 0.3s ease; 
+        }
+        
+        .card-atk:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+        }
+
+        .card-atk img { 
+            width: 100%; aspect-ratio: 1/1; object-fit: cover; 
+            background: #eee; transition: transform 0.3s ease; 
+        }
+
+        .card-atk:hover img {
+            transform: scale(1.05);
+        }
+
+        .btn-add:hover {
+            animation: shake 0.5s ease infinite;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            50% { transform: translateX(2px); }
+            75% { transform: translateX(-2px); }
+            100% { transform: translateX(0); }
+        }
+        /* --- AKHIR BAGIAN ANIMASI --- */
+
         .info-atk { padding: 10px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .price { font-weight: 800; color: var(--orange); margin: 5px 0; font-size: 0.95rem; }
 
         .btn-group { display: flex; flex-direction: column; gap: 5px; margin-top: 8px; }
-        .btn-add { background: var(--navy); color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; font-size: 0.75rem; cursor: pointer; }
+        .btn-add { background: var(--navy); color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; font-size: 0.75rem; cursor: pointer; transition: 0.3s; }
         .btn-cancel { background: #f1f5f9; color: #64748b; border: none; padding: 6px; border-radius: 6px; font-size: 0.7rem; cursor: pointer; }
 
         .pagination { display: flex; justify-content: center; align-items: center; gap: 15px; margin: 20px 0; padding-bottom: 20px; }
@@ -574,4 +606,3 @@
     </script>
 </body>
 </html>
-
