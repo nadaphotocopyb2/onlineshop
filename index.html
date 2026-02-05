@@ -87,7 +87,6 @@
         .grid-atk { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px 5%; }
         @media (min-width: 900px) { .grid-atk { grid-template-columns: repeat(5, 1fr); } }
 
-        /* --- BAGIAN ANIMASI YANG DIKEMBALIKAN --- */
         .card-atk { 
             background: white; border-radius: 12px; overflow: hidden; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; 
@@ -119,7 +118,6 @@
             75% { transform: translateX(-2px); }
             100% { transform: translateX(0); }
         }
-        /* --- AKHIR BAGIAN ANIMASI --- */
 
         .info-atk { padding: 10px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .price { font-weight: 800; color: var(--orange); margin: 5px 0; font-size: 0.95rem; }
@@ -169,10 +167,40 @@
         .popup-notif-content i { font-size: 3rem; color: var(--orange); margin-bottom: 15px; }
         .btn-paham { background: var(--navy); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; margin-top: 15px; cursor: pointer; width: 100%; }
 
+        /* MODAL PANDUAN BARU */
+        .guide-step { display: flex; align-items: flex-start; gap: 10px; text-align: left; margin-bottom: 15px; font-size: 0.85rem; }
+        .guide-step i { color: var(--sky); font-size: 1.2rem; margin-top: 3px; }
+
         footer { background: var(--navy); color: white; padding: 20px; text-align: center; border-top: 4px solid var(--orange); }
     </style>
 </head>
 <body>
+
+    <div id="guideModal" class="popup-notif" style="display: flex;">
+        <div class="popup-notif-content" style="max-width: 400px;">
+            <i class="fas fa-book-open"></i>
+            <h3 style="margin: 0 0 15px 0;">Panduan Belanja</h3>
+            
+            <div class="guide-step">
+                <i class="fas fa-1"></i>
+                <span>Pilih barang/alat tulis yang diinginkan dan klik tombol <b>+ Keranjang</b>.</span>
+            </div>
+            <div class="guide-step">
+                <i class="fas fa-2"></i>
+                <span>Klik <b>Ikon Keranjang (Oranye)</b> di pojok kanan atas untuk melihat daftar belanja.</span>
+            </div>
+            <div class="guide-step">
+                <i class="fas fa-3"></i>
+                <span>Lengkapi <b>Data Pemesan</b>, pilih metode pengiriman, lalu klik <b>Kirim WA Admin</b>.</span>
+            </div>
+            <div class="guide-step">
+                <i class="fas fa-4"></i>
+                <span>Admin akan memverifikasi pesanan Anda melalui WhatsApp. Selesai!</span>
+            </div>
+
+            <button class="btn-paham" onclick="closeGuide()">Mulai Belanja Sekarang</button>
+        </div>
+    </div>
 
     <header>
         <div class="header-top">
@@ -388,6 +416,9 @@
         let filteredAtk = [...dataAtk];
         let myCart = [];
 
+        // FUNGSI PANDUAN BARU
+        function closeGuide() { document.getElementById('guideModal').style.display = 'none'; }
+
         // FUNGSI APK MODAL
         function openApkModal() { document.getElementById('apkModal').style.display = 'block'; }
         function closeApkModal() { document.getElementById('apkModal').style.display = 'none'; }
@@ -597,6 +628,7 @@
             if (event.target.className === 'modal-cart') {
                 closeModals();
                 closeApkModal();
+                closeGuide();
             }
             if (event.target.id === 'deliveryPopup') closeDeliveryPopup();
         }
